@@ -400,10 +400,10 @@ tail -f /var/log/mongodb/mongod.log
 
 ### Common Issues
 
-**1. OpenAI API Error**
+**1. Gemini API Error**
 ```bash
 # Check if key is set
-cat /app/backend/.env | grep OPENAI_API_KEY
+cat /app/backend/.env | grep GEMINI_API_KEY
 ```
 
 **2. Email Not Sending**
