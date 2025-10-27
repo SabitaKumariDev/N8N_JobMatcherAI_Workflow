@@ -163,7 +163,7 @@ const WorkflowNode = ({ data }) => (
 
 ### Prerequisites
 - MongoDB running on localhost:27017
-- OpenAI API key
+- Google Gemini API key
 - Gmail account with App Password
 
 ### 1. Backend Configuration
@@ -176,20 +176,25 @@ MONGO_URL="mongodb://localhost:27017"
 DB_NAME="job_matcher_db"
 CORS_ORIGINS="*"
 
-# OpenAI API Key - REQUIRED
-OPENAI_API_KEY="sk-your-openai-api-key-here"
+# Google Gemini API Key - REQUIRED
+GEMINI_API_KEY="your-gemini-api-key-here"
 
 # Gmail SMTP - REQUIRED
-GMAIL_EMAIL="sabita.softech@gmail.com"
+GMAIL_EMAIL="your.email@gmail.com"
 GMAIL_APP_PASSWORD="your-16-char-app-password"
 
 # JWT Secret
 JWT_SECRET="your-secret-key-for-jwt-tokens"
 
-# LangSmith (Optional)
+# LangSmith (Optional - for workflow debugging)
 LANGSMITH_API_KEY=""
 LANGSMITH_PROJECT="job-matcher"
 ```
+
+#### How to Get Gemini API Key:
+1. Go to: https://aistudio.google.com/app/apikey
+2. Click "Create API Key"
+3. Copy the key (starts with `AIza...`)
 
 #### How to Get Gmail App Password:
 1. Go to [Google Account Security](https://myaccount.google.com/security)
