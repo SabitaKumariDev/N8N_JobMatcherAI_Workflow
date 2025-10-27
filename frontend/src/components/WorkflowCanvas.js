@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useEffect } from 'react';
-import { ReactFlow, Controls, Background, MarkerType } from '@xyflow/react';
+import React from 'react';
+import { ReactFlow, Controls, Background, MarkerType, Handle, Position } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import {
   FileText,
@@ -22,6 +22,7 @@ const WorkflowNode = ({ data }) => {
 
   return (
     <div className="workflow-node" data-testid={`workflow-node-${data.label}`}>
+      <Handle type="target" position={Position.Top} />
       <div className="workflow-node-header">
         <div className="workflow-node-icon">
           <Icon size={16} />
@@ -37,6 +38,7 @@ const WorkflowNode = ({ data }) => {
           {data.status.toUpperCase()}
         </div>
       )}
+      <Handle type="source" position={Position.Bottom} />
     </div>
   );
 };
