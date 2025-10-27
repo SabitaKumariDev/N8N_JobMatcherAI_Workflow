@@ -3,11 +3,13 @@ import io
 import base64
 from typing import Dict, List
 import os
-from openai import OpenAI
+import google.generativeai as genai
+import json
 
 class ResumeParser:
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
     
     def parse_pdf(self, base64_content: str) -> str:
         """Extract text from base64 encoded PDF"""
@@ -25,13 +27,9 @@ class ResumeParser:
             raise Exception(f"Error parsing PDF: {str(e)}")
     
     async def extract_skills_and_experience(self, resume_text: str) -> Dict:
-        """Use GPT-4o to extract skills and experience from resume"""
+        """Use Gemini to extract skills and experience from resume"""
         try:
-            response = self.client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": "You are an expert resume parser. Extract key information from resumes in JSON format."},
-                    {"role": "user", "content": f"""Extract the following from this resume:
+            prompt = f"""Extract the following from this resume and return ONLY valid JSON:
 1. List of technical skills (programming languages, frameworks, tools)
 2. Years of experience (estimate if not explicitly stated)
 3. Key expertise areas
@@ -39,16 +37,25 @@ class ResumeParser:
 Resume:
 {resume_text}
 
-Return as JSON with keys: skills (array), experience (string), expertise (array)"""}
-                ],
-                temperature=0.3
-            )
+Return as JSON with keys: skills (array), experience (string), expertise (array)
+Example: {{"skills": ["Python", "React"], "experience": "5 years", "expertise": ["Web Development"]}}"""
+
+            response = self.model.generate_content(prompt)
             
-            import json
-            result = json.loads(response.choices[0].message.content)
+            # Extract JSON from response
+            result_text = response.text.strip()
+            
+            # Try to find JSON in the response
+            if result_text.startswith('```json'):
+                result_text = result_text.split('```json')[1].split('```')[0].strip()
+            elif result_text.startswith('```'):
+                result_text = result_text.split('```')[1].split('```')[0].strip()
+            
+            result = json.loads(result_text)
             return result
         except Exception as e:
-            # Fallback to basic parsing if OpenAI fails
+            print(f"Error parsing resume with Gemini: {str(e)}")
+            # Fallback to basic parsing if Gemini fails
             return {
                 "skills": [],
                 "experience": "Not specified",
