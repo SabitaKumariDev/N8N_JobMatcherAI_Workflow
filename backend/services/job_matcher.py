@@ -1,14 +1,15 @@
 from typing import List, Dict
 import os
-from openai import OpenAI
+import google.generativeai as genai
 import json
 
 class JobMatcher:
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
     
     async def match_jobs(self, resume_data: Dict, jobs: List[Dict]) -> List[Dict]:
-        """Match jobs against resume using GPT-4o"""
+        """Match jobs against resume using Gemini"""
         if not jobs:
             return []
         
@@ -33,8 +34,7 @@ class JobMatcher:
                 for idx, job in enumerate(jobs)
             ])
             
-            prompt = f"""
-You are an expert job matcher. Analyze these jobs against the candidate's profile and provide match scores.
+            prompt = f"""You are an expert job matcher. Analyze these jobs against the candidate's profile and provide match scores.
 
 Candidate Profile:
 - Skills: {', '.join(resume_data.get('skills', []))}
@@ -48,19 +48,19 @@ For each job, provide:
 1. Match score (0-100) based on skills, experience, and fit
 2. Brief reason for the match score (1-2 sentences)
 
-Return as JSON array: [{"job_index": 0, "match_score": 85, "match_reason": "..."}]
+Return ONLY valid JSON array: [{{"job_index": 0, "match_score": 85, "match_reason": "..."}}]
 """
             
-            response = self.client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": "You are an expert job matching system. Analyze jobs and provide accurate match scores."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.3
-            )
+            response = self.model.generate_content(prompt)
+            result_text = response.text.strip()
             
-            matches = json.loads(response.choices[0].message.content)
+            # Extract JSON from response
+            if result_text.startswith('```json'):
+                result_text = result_text.split('```json')[1].split('```')[0].strip()
+            elif result_text.startswith('```'):
+                result_text = result_text.split('```')[1].split('```')[0].strip()
+            
+            matches = json.loads(result_text)
             
             # Merge match results with original job data
             result = []
@@ -74,5 +74,6 @@ Return as JSON array: [{"job_index": 0, "match_score": 85, "match_reason": "..."
             
             return result
         except Exception as e:
+            print(f"Error matching jobs with Gemini: {str(e)}")
             # Return jobs with default scores on error
-            return [{**job, 'match_score': 50, 'match_reason': 'Unable to calculate precise match'} for job in jobs]
+            return [{'match_score': 50, 'match_reason': 'Unable to calculate precise match', **job} for job in jobs]
