@@ -124,6 +124,41 @@ The "Fetch Jobs" node spawns 8 async tasks simultaneously, collecting results fr
 - Y Combinator Jobs
 - Wellfound (AngelList)
 
+### React Flow Visualization
+
+The frontend uses **React Flow** to create an interactive, n8n-style workflow canvas:
+
+**Features**:
+- **Custom Node Components**: Each workflow step is a styled React component with icon, title, description, and status indicator
+- **Dynamic Edge Rendering**: Blue animated connections between nodes show data flow
+- **Real-time State Updates**: Nodes change color based on execution status:
+  - Gray (Pending) → Blue (Running) → Green (Completed) → Red (Failed)
+- **Handle Components**: Connection points (source/target) enable visual data flow representation
+- **Smooth Transitions**: SmoothStep edges with arrow markers for professional appearance
+- **Responsive Canvas**: Pan, zoom, and fit controls for easy navigation
+
+**Implementation Highlights**:
+```jsx
+// Custom Workflow Node
+const WorkflowNode = ({ data }) => (
+  <div className="workflow-node">
+    <Handle type="target" position={Position.Top} />
+    <Icon component={data.icon} />
+    <Title>{data.label}</Title>
+    <Status>{data.status}</Status>
+    <Handle type="source" position={Position.Bottom} />
+  </div>
+);
+
+// React Flow with live state
+<ReactFlow
+  nodes={nodes}
+  edges={edges}
+  nodeTypes={{ workflow: WorkflowNode }}
+  fitView
+/>
+```
+
 ## 🚀 Setup Instructions
 
 ### Prerequisites
