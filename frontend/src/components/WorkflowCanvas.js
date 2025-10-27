@@ -46,7 +46,7 @@ const nodeTypes = {
 };
 
 const WorkflowCanvas = ({ status }) => {
-  const initialNodes = useMemo(
+  const nodes = useMemo(
     () => [
       {
         id: '1',
@@ -62,7 +62,7 @@ const WorkflowCanvas = ({ status }) => {
       {
         id: '2',
         type: 'workflow',
-        position: { x: 250, y: 120 },
+        position: { x: 250, y: 140 },
         data: {
           label: 'Parse Resume',
           description: 'Extract skills using GPT-4o',
@@ -78,7 +78,7 @@ const WorkflowCanvas = ({ status }) => {
       {
         id: '3',
         type: 'workflow',
-        position: { x: 50, y: 260 },
+        position: { x: 50, y: 280 },
         data: {
           label: 'Fetch Jobs',
           description: 'Search 8+ job boards (24h)',
@@ -94,7 +94,7 @@ const WorkflowCanvas = ({ status }) => {
       {
         id: '4',
         type: 'workflow',
-        position: { x: 450, y: 260 },
+        position: { x: 450, y: 280 },
         data: {
           label: 'Match Jobs',
           description: 'AI-powered job matching',
@@ -110,7 +110,7 @@ const WorkflowCanvas = ({ status }) => {
       {
         id: '5',
         type: 'workflow',
-        position: { x: 250, y: 400 },
+        position: { x: 250, y: 420 },
         data: {
           label: 'Send Email',
           description: 'Email matched jobs to you',
@@ -122,57 +122,96 @@ const WorkflowCanvas = ({ status }) => {
     [status]
   );
 
-  const initialEdges = [
-    {
-      id: 'e1-2',
-      source: '1',
-      target: '2',
-      animated: status === 'running',
-      markerEnd: { type: MarkerType.ArrowClosed }
-    },
-    {
-      id: 'e2-3',
-      source: '2',
-      target: '3',
-      animated: status === 'running',
-      markerEnd: { type: MarkerType.ArrowClosed }
-    },
-    {
-      id: 'e2-4',
-      source: '2',
-      target: '4',
-      animated: status === 'running',
-      markerEnd: { type: MarkerType.ArrowClosed }
-    },
-    {
-      id: 'e3-5',
-      source: '3',
-      target: '5',
-      animated: status === 'running',
-      markerEnd: { type: MarkerType.ArrowClosed }
-    },
-    {
-      id: 'e4-5',
-      source: '4',
-      target: '5',
-      animated: status === 'running',
-      markerEnd: { type: MarkerType.ArrowClosed }
-    }
-  ];
-
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const edges = useMemo(
+    () => [
+      {
+        id: 'e1-2',
+        source: '1',
+        target: '2',
+        type: 'smoothstep',
+        animated: status === 'running',
+        style: { stroke: '#3b82f6', strokeWidth: 2 },
+        markerEnd: { 
+          type: MarkerType.ArrowClosed,
+          color: '#3b82f6',
+          width: 20,
+          height: 20
+        }
+      },
+      {
+        id: 'e2-3',
+        source: '2',
+        target: '3',
+        type: 'smoothstep',
+        animated: status === 'running',
+        style: { stroke: '#3b82f6', strokeWidth: 2 },
+        markerEnd: { 
+          type: MarkerType.ArrowClosed,
+          color: '#3b82f6',
+          width: 20,
+          height: 20
+        }
+      },
+      {
+        id: 'e2-4',
+        source: '2',
+        target: '4',
+        type: 'smoothstep',
+        animated: status === 'running',
+        style: { stroke: '#3b82f6', strokeWidth: 2 },
+        markerEnd: { 
+          type: MarkerType.ArrowClosed,
+          color: '#3b82f6',
+          width: 20,
+          height: 20
+        }
+      },
+      {
+        id: 'e3-5',
+        source: '3',
+        target: '5',
+        type: 'smoothstep',
+        animated: status === 'running',
+        style: { stroke: '#3b82f6', strokeWidth: 2 },
+        markerEnd: { 
+          type: MarkerType.ArrowClosed,
+          color: '#3b82f6',
+          width: 20,
+          height: 20
+        }
+      },
+      {
+        id: 'e4-5',
+        source: '4',
+        target: '5',
+        type: 'smoothstep',
+        animated: status === 'running',
+        style: { stroke: '#3b82f6', strokeWidth: 2 },
+        markerEnd: { 
+          type: MarkerType.ArrowClosed,
+          color: '#3b82f6',
+          width: 20,
+          height: 20
+        }
+      }
+    ],
+    [status]
+  );
 
   return (
     <div className="h-full w-full" data-testid="workflow-canvas">
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         fitView
         attributionPosition="bottom-left"
+        minZoom={0.5}
+        maxZoom={1.5}
+        defaultEdgeOptions={{
+          type: 'smoothstep',
+          animated: false
+        }}
       >
         <Background color="#e5e7eb" gap={16} />
         <Controls />
