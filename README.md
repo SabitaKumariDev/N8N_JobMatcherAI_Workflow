@@ -449,13 +449,63 @@ Create new LangGraph node that:
 
 ## 🎯 Future Enhancements
 
-- [ ] Job scoring with multiple LLM models
-- [ ] Auto-apply to jobs via APIs
-- [ ] Cover letter generation per job
-- [ ] Google Sheets integration
-- [ ] Scheduled daily runs
-- [ ] User dashboard with analytics
-- [ ] Job application tracking
+- [ ] **Drag-and-Drop Workflow Builder**: User-customizable node placement
+- [ ] **Custom Node Creation**: Allow users to add new job sources or processing steps
+- [ ] **Conditional Branching**: If-else logic in workflow paths
+- [ ] **Scheduled Executions**: Cron-based automatic daily runs
+- [ ] **Cover Letter Generation**: AI-powered custom cover letters per job
+- [ ] **Google Sheets Integration**: Auto-export matches to spreadsheet
+- [ ] **Webhook Triggers**: Start workflow from external events
+- [ ] **Job Application Automation**: Auto-apply via APIs where available
+- [ ] **Multi-Resume Profiles**: Different resumes for different job types
+- [ ] **Analytics Dashboard**: Execution history, success rates, trends
+
+## 💼 Technical Highlights (For Portfolio/Resume)
+
+This project demonstrates proficiency in:
+
+### **Frontend Engineering**
+- React 19 with hooks (useState, useMemo, useCallback)
+- React Flow for complex interactive visualizations
+- Tailwind CSS + Shadcn UI component library
+- Responsive design and modern UX patterns
+- Real-time state management and updates
+
+### **Backend Development**
+- FastAPI async Python (modern async/await patterns)
+- MongoDB with Motor (async MongoDB driver)
+- RESTful API design with proper HTTP methods
+- File upload handling (multipart/form-data)
+- Error handling and validation
+
+### **AI/ML Integration**
+- Google Gemini AI API integration
+- Prompt engineering for structured outputs
+- JSON parsing from LLM responses
+- Batch processing for cost optimization
+- Fallback strategies for reliability
+
+### **Workflow Orchestration**
+- LangGraph state machines
+- Directed Acyclic Graph (DAG) implementation
+- Parallel async execution
+- State persistence across workflow steps
+- Node-based architecture
+
+### **DevOps & Architecture**
+- Docker containerization
+- MongoDB database design
+- Environment variable management
+- Email SMTP integration (aiosmtplib)
+- Web scraping at scale (BeautifulSoup4, aiohttp)
+- Logging and monitoring
+
+### **Software Engineering Best Practices**
+- Modular code organization (services, models, routes)
+- Type hints and Pydantic models
+- Async/await for I/O-bound operations
+- Error handling and graceful degradation
+- Documentation (README, API docs)
 
 ## 🤝 Contributing
 
