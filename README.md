@@ -1,6 +1,6 @@
 # Job Matcher AI - Automated Resume-to-Job Matching System
 
-An intelligent job matching workflow built with **React Flow**, **FastAPI**, **LangChain**, **LangGraph**, and **OpenAI GPT-4o**. This system automatically fetches jobs from 8+ job boards posted in the last 24 hours, matches them against your resume using AI, and emails you the best matches.
+An intelligent job matching workflow built with **React Flow**, **FastAPI**, **LangChain**, **LangGraph**, and **Gemini API Key**. This system automatically fetches jobs from 8+ job boards posted in the last 24 hours, matches them against your resume using AI, and emails you the best matches.
 
 ## 🌟 Features
 
