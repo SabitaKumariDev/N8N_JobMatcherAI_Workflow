@@ -185,7 +185,7 @@ const Dashboard = () => {
                 <li>• Upload your resume (PDF or text)</li>
                 <li>• AI extracts your skills & experience</li>
                 <li>• Searches 8+ job boards (last 24 hours)</li>
-                <li>• Matches jobs using GPT-4o</li>
+                <li>• Matches jobs using Gemini 2.0</li>
                 <li>• Sends results to your email</li>
               </ul>
             </Card>
