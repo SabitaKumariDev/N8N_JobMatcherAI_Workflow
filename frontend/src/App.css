@@ -40,9 +40,28 @@ body {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+.react-flow__edge {
+  z-index: 1;
+}
+
 .react-flow__edge-path {
   stroke: #3b82f6;
   stroke-width: 2;
+  fill: none;
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .react-flow__edge.selected .react-flow__edge-path {
@@ -60,6 +79,15 @@ body {
 .react-flow__handle:hover {
   background: #2563eb;
   transform: scale(1.2);
+}
+
+.react-flow__edge-textwrapper {
+  pointer-events: all;
+}
+
+.react-flow__edge-text {
+  font-size: 10px;
+  fill: #6b7280;
 }
 
 /* Custom node styles */
