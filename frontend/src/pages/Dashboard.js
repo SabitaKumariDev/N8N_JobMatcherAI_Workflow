@@ -97,7 +97,7 @@ const Dashboard = () => {
                   Job Matcher AI
                 </h1>
                 <p className="text-sm text-gray-600">
-                  Intelligent job matching powered by GPT-4o
+                  Intelligent job matching powered by Gemini 2.0
                 </p>
               </div>
             </div>
