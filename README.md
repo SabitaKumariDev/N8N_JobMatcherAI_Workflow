@@ -243,12 +243,42 @@ sudo supervisorctl status
 
 ## 🔧 API Endpoints
 
+### Workflow Execution
+The core workflow automation API:
+
+```bash
+# Execute complete workflow (main automation endpoint)
+POST /api/workflow/execute?user_email={email}
+Body: {
+  "resume_id": "uuid",
+  "job_sources": ["linkedin", "indeed", "glassdoor", ...],
+  "send_email": true
+}
+Response: {
+  "execution_id": "uuid",
+  "status": "completed",
+  "jobs_found": 45,
+  "jobs_matched": 12,
+  "matched_jobs": [...]
+}
+
+# Get workflow execution status (poll for progress)
+GET /api/workflow/execution/{execution_id}
+Response: {
+  "status": "running",
+  "jobs_found": 18,
+  "jobs_matched": 0,
+  "started_at": "2025-01-01T12:00:00Z"
+}
+```
+
 ### Resume Management
 ```bash
-# Upload resume
+# Upload resume (workflow input)
 POST /api/resume/upload
 Content-Type: multipart/form-data
 Body: { user_email, resume_text OR file }
+Response: Resume object with ID
 
 # Get resume by ID
 GET /api/resume/{resume_id}
@@ -257,26 +287,36 @@ GET /api/resume/{resume_id}
 GET /api/resume/user/{user_email}
 ```
 
-### Workflow Execution
+### Job Matches
 ```bash
-# Execute job matching workflow
-POST /api/workflow/execute?user_email={email}
-Body: {
-  "resume_id": "uuid",
-  "job_sources": ["linkedin", "indeed", ...],
-  "send_email": true
-}
-
-# Get execution status
-GET /api/workflow/execution/{execution_id}
-
-# Get job matches
-GET /api/jobs/matches/{user_email}
+# Get job matches (workflow output)
+GET /api/jobs/matches/{user_email}?limit=50
+Response: [
+  {
+    "job_id": "linkedin_123",
+    "title": "Senior Software Engineer",
+    "company": "Tech Corp",
+    "match_score": 85,
+    "match_reason": "Strong Python and React skills...",
+    "url": "https://...",
+    "matched_at": "2025-01-01T12:30:00Z"
+  },
+  ...
+]
 ```
 
-### Health Check
+### System Health
 ```bash
+# Health check
 GET /api/health
+Response: {
+  "status": "healthy",
+  "services": {
+    "database": "connected",
+    "gemini": "configured",
+    "email": "configured"
+  }
+}
 ```
 
 ## 🗄️ Database Collections
@@ -424,7 +464,3 @@ This is a template project. Feel free to fork and customize for your needs!
 ## 📄 License
 
 MIT License - feel free to use for personal or commercial projects.
-
----
-
-**Built with ❤️ using Emergent Agent Platform**
