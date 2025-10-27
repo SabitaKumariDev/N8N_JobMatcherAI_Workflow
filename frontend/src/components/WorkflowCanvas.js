@@ -1,12 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
-import ReactFlow, {
-  Controls,
-  Background,
-  useNodesState,
-  useEdgesState,
-  MarkerType
-} from 'reactflow';
-import 'reactflow/dist/style.css';
+import React, { useCallback, useMemo, useEffect } from 'react';
+import { ReactFlow, Controls, Background, MarkerType } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import {
   FileText,
   Brain,
