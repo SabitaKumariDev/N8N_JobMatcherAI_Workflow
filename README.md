@@ -47,26 +47,72 @@ This is **not just another job board scraper** - it's a fully-functional **workf
 ## 🏗️ Architecture
 
 ### Tech Stack
-- **Frontend**: React 19, React Flow, Tailwind CSS, Shadcn UI
-- **Backend**: FastAPI, Python 3.11
-- **LLM Integration**: OpenAI GPT-4o
-- **Workflow**: LangChain, LangGraph, LangSmith
-- **Database**: MongoDB
+- **Frontend**: React 19, React Flow (workflow visualization), Tailwind CSS, Shadcn UI
+- **Backend**: FastAPI (async Python), LangChain, LangGraph (workflow orchestration)
+- **AI Engine**: Google Gemini 2.0 Flash
+- **Database**: MongoDB (document store for workflow state)
 - **Email**: Gmail SMTP (aiosmtplib)
+- **Job Scrapers**: BeautifulSoup4, aiohttp (async scraping)
 
-### Workflow Steps
+### Workflow Architecture (LangGraph State Machine)
+
+This system implements a **directed acyclic graph (DAG)** workflow engine using LangGraph:
 
 ```
-1. Upload Resume (PDF/Text)
-   ↓
-2. Parse Resume (GPT-4o extracts skills)
-   ↓
-3. Fetch Jobs (Parallel scraping from 8 sources)
-   ↓
-4. Match Jobs (AI scoring 0-100)
-   ↓
-5. Send Email (Top matches to user)
+START
+  ↓
+┌─────────────────────┐
+│  Upload Resume      │  ← User Input
+└──────────┬──────────┘
+           ↓
+┌─────────────────────┐
+│  Parse Resume       │  ← Gemini AI Node
+│  (Extract Skills)   │
+└──────────┬──────────┘
+           ↓
+     ┌─────┴─────┐
+     ↓           ↓
+┌─────────┐  ┌─────────┐
+│ Fetch   │  │ Fetch   │  ← Parallel Execution
+│ Jobs    │  │ More    │
+│ (8 src) │  │ Jobs    │
+└────┬────┘  └────┬────┘
+     └─────┬─────┘
+           ↓
+┌─────────────────────┐
+│  Match Jobs         │  ← Gemini AI Node
+│  (Score 0-100)      │
+└──────────┬──────────┘
+           ↓
+┌─────────────────────┐
+│  Send Email         │  ← Output Node
+└──────────┬──────────┘
+           ↓
+          END
 ```
+
+### LangGraph Workflow Implementation
+
+Each workflow node is an **async Python function** that:
+1. Receives the current state (TypedDict)
+2. Performs its operation (parse, fetch, match, send)
+3. Updates and returns the modified state
+4. Passes state to the next node(s)
+
+**State Management**:
+```python
+class WorkflowState(TypedDict):
+    user_id: str
+    resume_data: Dict
+    job_sources: List[str]
+    all_jobs: List[Dict]
+    matched_jobs: List[Dict]
+    status: str
+    error: str
+```
+
+**Parallel Node Execution**:
+The "Fetch Jobs" node spawns 8 async tasks simultaneously, collecting results from all job boards in parallel before proceeding to matching.
 
 ### Job Sources
 - LinkedIn
