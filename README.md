@@ -1,16 +1,48 @@
-# Job Matcher AI - Automated Resume-to-Job Matching System
+# Job Matcher AI - n8n-Style Workflow Automation System
 
-An intelligent job matching workflow built with **React Flow**, **FastAPI**, **LangChain**, **LangGraph**, and **Gemini API Key**. This system automatically fetches jobs from 8+ job boards posted in the last 24 hours, matches them against your resume using AI, and emails you the best matches.
+> A sophisticated workflow automation platform inspired by n8n, built from scratch using **React Flow** for visual workflow orchestration, **LangGraph** for state management, and **Google Gemini AI** for intelligent job matching.
 
-## 🌟 Features
+## 🎯 What Makes This Special?
 
-- **📄 Resume Upload**: Support for both PDF and text format
-- **🧠 AI-Powered Parsing**: Extracts skills and experience using GPT-4o
-- **🔍 Multi-Source Job Fetching**: Scrapes 8+ job boards (LinkedIn, Indeed, Glassdoor, Y Combinator, Wellfound, etc.)
-- **🎯 Intelligent Matching**: Uses GPT-4o to match jobs with resume (60%+ match threshold)
-- **📧 Email Notifications**: Automatically sends matched jobs to your email
-- **🔄 Workflow Visualization**: Beautiful React Flow canvas showing the entire process
-- **💾 MongoDB Storage**: Persists resumes, jobs, and match results
+This is **not just another job board scraper** - it's a fully-functional **workflow automation engine** similar to n8n/Zapier, specifically designed for AI-powered job matching. The system demonstrates advanced skills in:
+
+- **Visual Workflow Builder**: Interactive node-based canvas using React Flow
+- **State Management**: LangGraph orchestrates complex multi-step workflows
+- **AI Integration**: Google Gemini 2.0 for resume parsing and intelligent matching
+- **Parallel Processing**: Asynchronous job fetching from 8+ sources simultaneously
+- **Event-Driven Architecture**: Node-to-node data flow with real-time status updates
+
+## 🌟 Key Features
+
+### 🔄 Visual Workflow Engine
+- **Interactive Canvas**: Drag-and-drop node visualization with React Flow
+- **Real-time Execution**: Watch workflow progress as nodes change status
+- **Connected Pipeline**: Visual edges show data flow between workflow nodes
+- **State Tracking**: Each node maintains its execution state (pending → running → completed)
+
+### 🤖 AI-Powered Intelligence
+- **Resume Parser Node**: Gemini 2.0 extracts skills, experience, and expertise
+- **Job Matcher Node**: AI scoring (0-100) with detailed reasoning
+- **Smart Filtering**: Only surfaces 60%+ matches to reduce noise
+- **Batch Processing**: Efficiently processes jobs in batches for optimal performance
+
+### 🔍 Multi-Source Job Aggregation
+- **8 Job Board Scrapers**: LinkedIn, Indeed, Glassdoor, Y Combinator, Wellfound, Jobrights.ai, Startups.gallery, Brian's Job Search
+- **Parallel Execution**: Fetches from all sources simultaneously using async/await
+- **24-Hour Window**: Only retrieves recently posted jobs
+- **Deduplication**: Handles duplicate jobs across platforms
+
+### 📧 Automated Notifications
+- **Beautiful HTML Emails**: Professional job match cards with styling
+- **Match Score Display**: Visual indicators for fit percentage
+- **Direct Application Links**: One-click access to job postings
+- **Personalized Reasoning**: AI explains why each job matches your profile
+
+### 💾 Full Data Persistence
+- **MongoDB Collections**: Resumes, jobs, matches, workflow executions
+- **Execution History**: Track all workflow runs with timestamps
+- **Match Archive**: Store AI-generated scores and reasoning
+- **Query API**: Retrieve past matches and execution logs
 
 ## 🏗️ Architecture
 
