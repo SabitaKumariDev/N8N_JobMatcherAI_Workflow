@@ -142,3 +142,16 @@ xxhash==3.6.0
 yarl==1.22.0
 zipp==3.23.0
 zstandard==0.25.0
+PyPDF2
+motor
+fastapi
+pydantic
+python-dotenv
+langchain
+google-generativeai
+packaging
+aiosmtplib
+aiohttp
+beautifulsoup4
+langgraph
+python-multipart
