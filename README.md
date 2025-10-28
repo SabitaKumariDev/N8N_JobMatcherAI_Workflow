@@ -54,6 +54,233 @@ This is **not just another job board scraper** - it's a fully-functional **workf
 - **Email**: Gmail SMTP (aiosmtplib)
 - **Job Scrapers**: BeautifulSoup4, aiohttp (async scraping)
 
+## 🚀 Local Setup Guide for Visual Studio Code
+
+### **Prerequisites**
+
+Before starting, make sure you have these installed:
+
+1. **Node.js** (v18 or higher)
+   - Download: https://nodejs.org/
+   - Check: `node --version`
+
+2. **Python** (3.11 or higher)
+   - Download: https://www.python.org/downloads/
+   - Check: `python --version` or `python3 --version`
+
+3. **MongoDB**
+   - Download: https://www.mongodb.com/try/download/community
+   - Or use Docker: `docker run -d -p 27017:27017 --name mongodb mongo`
+
+4. **Git** (to clone the repo)
+   - Download: https://git-scm.com/
+
+---
+
+## 📦 Step-by-Step Setup
+
+### **Step 1: Clone the Repository**
+
+```bash
+# Open terminal in VS Code (Ctrl+` or Cmd+`)
+git clone <your-github-repo-url>
+cd <project-folder-name>
+
+# Open in VS Code
+code .
+```
+
+### **Step 2: Backend Setup**
+
+```bash
+# Navigate to backend folder
+cd backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On Mac/Linux:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create .env file
+# Copy the content below or use: cp .env.example .env
+```
+
+**Create `/backend/.env` file:**
+```bash
+MONGO_URL="mongodb://localhost:27017"
+DB_NAME="job_matcher_db"
+CORS_ORIGINS="*"
+
+# Google Gemini API Key - Get from: https://aistudio.google.com/app/apikey
+GEMINI_API_KEY="your-gemini-api-key-here"
+
+# Gmail SMTP Configuration
+GMAIL_EMAIL="your-email@gmail.com"
+GMAIL_APP_PASSWORD="your-16-char-app-password"
+
+# JWT Secret - Generate with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+JWT_SECRET="your-secret-key-here"
+
+# LangSmith (Optional)
+LANGSMITH_API_KEY=""
+LANGSMITH_PROJECT="job-matcher"
+```
+
+### **Step 3: Frontend Setup**
+
+```bash
+# Open a NEW terminal (Ctrl+Shift+` or Cmd+Shift+`)
+cd frontend
+
+# Install dependencies (using yarn or npm)
+yarn install
+# OR
+npm install
+
+# Create .env file
+```
+
+**Create `/frontend/.env` file:**
+```bash
+# Backend URL (for local development)
+REACT_APP_BACKEND_URL="http://localhost:8001"
+```
+
+### **Step 4: Start MongoDB**
+
+```bash
+# Option 1: If MongoDB is installed locally
+mongod
+
+# Option 2: If using Docker
+docker run -d -p 27017:27017 --name mongodb mongo
+
+# Option 3: If MongoDB is already running, skip this step
+```
+
+### **Step 5: Start Backend Server**
+
+```bash
+# In backend terminal (make sure venv is activated)
+cd backend
+python -m uvicorn server:app --reload --host 0.0.0.0 --port 8001
+```
+
+You should see:
+```
+INFO:     Uvicorn running on http://0.0.0.0:8001
+INFO:     Application startup complete.
+```
+
+### **Step 6: Start Frontend**
+
+```bash
+# In frontend terminal
+cd frontend
+yarn start
+# OR
+npm start
+```
+
+Browser should automatically open at: **http://localhost:3000**
+
+---
+
+## 🔧 VS Code Configuration (Optional but Recommended)
+
+### **Install VS Code Extensions:**
+
+1. **Python** (by Microsoft)
+2. **Pylance** (Python IntelliSense)
+3. **ESLint** (JavaScript linting)
+4. **Prettier** (Code formatting)
+5. **MongoDB for VS Code** (MongoDB viewer)
+6. **Thunder Client** (API testing - alternative to Postman)
+
+### **Create `.vscode/launch.json` for Debugging:**
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: FastAPI",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "server:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8001"
+      ],
+      "jinja": true,
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}/backend"
+    },
+    {
+      "name": "Chrome: React",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend/src"
+    }
+  ]
+}
+```
+
+## 🧪 Testing the App
+
+1. **Upload Resume:**
+   - Enter your email
+   - Paste resume text or upload PDF
+   - Click "Upload Resume"
+
+2. **Run Workflow:**
+   - Click "Run Job Matcher"
+   - Watch workflow visualization update
+   - Wait 2-5 minutes
+
+3. **Check Results:**
+   - Email will be sent to your Gmail
+   - Or view results in UI
+
+---
+
+## 📝 Quick Commands Reference
+
+```bash
+# Start backend (in backend folder)
+python -m uvicorn server:app --reload --host 0.0.0.0 --port 8001
+
+# Start frontend (in frontend folder)
+yarn start  # or npm start
+
+# Start MongoDB (Docker)
+docker run -d -p 27017:27017 --name mongodb mongo
+
+# View backend logs
+# (Check terminal where backend is running)
+
+# Install new Python package
+pip install <package-name>
+pip freeze > requirements.txt
+
+# Install new npm package
+yarn add <package-name>  # or npm install <package-name>
+```
+
+---
+
 ### Workflow Architecture (LangGraph State Machine)
 
 This system implements a **directed acyclic graph (DAG)** workflow engine using LangGraph:
@@ -113,16 +340,6 @@ class WorkflowState(TypedDict):
 
 **Parallel Node Execution**:
 The "Fetch Jobs" node spawns 8 async tasks simultaneously, collecting results from all job boards in parallel before proceeding to matching.
-
-### Job Sources
-- LinkedIn
-- Indeed
-- Jobrights.ai
-- Startups.gallery
-- Brian's Job Search
-- Glassdoor
-- Y Combinator Jobs
-- Wellfound (AngelList)
 
 ### React Flow Visualization
 
