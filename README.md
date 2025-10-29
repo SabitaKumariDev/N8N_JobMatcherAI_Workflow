@@ -527,20 +527,6 @@ Response: [
 ]
 ```
 
-### System Health
-```bash
-# Health check
-GET /api/health
-Response: {
-  "status": "healthy",
-  "services": {
-    "database": "connected",
-    "gemini": "configured",
-    "email": "configured"
-  }
-}
-```
-
 ## 🗄️ Database Collections
 
 ### `resumes`
